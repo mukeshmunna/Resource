@@ -453,7 +453,7 @@ VALUES
 select * from Mentor_Ideation_Map;
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Drop Table Mentor_Techstack
+
 CREATE TABLE Mentor_Techstack(
 Id int NOT NULL PRIMARY KEY,
 Mentor_Id int NOT NULL FOREIGN KEY(Mentor_Id) REFERENCES Mentor(Id),
@@ -472,3 +472,146 @@ VALUES
 (5, 1, 5, 1, '2023-09-26 20:30:00', 2)
 
 Select * from Mentor_Techstack
+
+--28/09/2023--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE company_requirement(
+id int NOT NULL Primary Key,
+company_id int NOT NULL,
+candidate_id int NOT NULL,
+requested_month varchar(20) NOT NULL,
+city varchar(20) DEFAULT NULL,
+is_doc_verification int DEFAULT 1,
+requirement_doc_path varchar(500) DEFAULT NULL,
+no_of_engg int NOT NULL,
+tech_stack_id int NOT NULL,
+tech_type_id int NOT NULL,
+maker_programs_id int NOT NULL,
+lead_id int NOT NULL,
+ideateion_engg_id int DEFAULT NULL,
+buddy_engg_id int DEFAULT NULL,
+special_remark text DEFAULT NULL,
+status int DEFAULT 1,
+creator_stamp datetime DEFAULT NULL,
+creator_user int DEFAULT NULL,
+CONSTRAINT FK_candidate_candidate_id FOREIGN KEY (candidate_id) REFERENCES fellowship_candidates (id),
+)
+
+
+INSERT INTO company_requirement (id, company_id, candidate_id, requested_month, city, is_doc_verification, requirement_doc_path, no_of_engg, tech_stack_id, tech_type_id, maker_programs_id, lead_id, ideateion_engg_id, buddy_engg_id, special_remark, status, creator_stamp, creator_user)
+VALUES
+(1, 1, 3, 'September 2023', 'Chennai', 1, 'doc1.pdf', 5, 1, 1, 1, 1, 2, 3, 'Special remarks for requirement 1', 1, '2023-09-27 09:00:00', 1),
+(2, 2, 4, 'March 2023', 'Mumbai', 1, 'doc2.pdf', 4, 2, 2, 2, 2, 3, 4, 'Special remarks for requirement 2', 1, '2023-09-27 09:15:00', 2),
+(3, 3, 5, 'May 2023', 'Mysore', 1, 'doc3.pdf', 3, 3, 3, 3, 3, 4, 5, 'Special remarks for requirement 3', 1, '2023-09-27 09:30:00', 3),
+(4, 4, 1, 'September 2023', 'Delhi', 1, 'doc4.pdf', 5, 4, 1, 1, 1, 2, 3, 'Special remarks for requirement 4', 1, '2023-09-27 09:45:00', 1),
+(5, 5, 2, 'July 2023', 'Pune', 1, 'doc5.pdf', 4, 5, 2, 2, 2, 3, 4, 'Special remarks for requirement 5', 1, '2023-09-27 10:00:00', 5)
+
+Select * from company_requirement
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE candidate_techstack_assignment(
+id int NOT NULL primary key,
+requirement_id int NOT NULL,
+candidate_id int NOT NULL FOREIGN KEY (candidate_id) REFERENCES fellowship_candidates (id),
+assign_date datetime DEFAULT NULL,
+status varchar(20) DEFAULT NULL,
+creator_stamp datetime DEFAULT NULL,
+creator_user int DEFAULT NULL,
+CONSTRAINT FK_candidate_techstack_assignment_requirement_id FOREIGN KEY(requirement_id) REFERENCES company_requirement (id),
+)
+
+INSERT INTO candidate_techstack_assignment (id, requirement_id, candidate_id, assign_date, status, creator_stamp, creator_user)
+VALUES
+(1, 1, 3, '2023-09-27 09:00:00', 'Assigned', '2023-09-27 09:15:00', 1),
+(2, 2, 4, '2023-09-27 09:15:00', 'Assigned', '2023-09-27 09:30:00', 2),
+(3, 3, 2, '2023-09-27 09:30:00', 'Assigned', '2023-09-27 09:45:00', 3),
+(4, 4, 5, '2023-09-27 09:45:00', 'Assigned', '2023-09-27 10:00:00', 1),
+(5, 5, 1, '2023-09-27 10:00:00', 'Assigned', '2023-09-27 10:15:00', 5)
+
+select * from candidate_techstack_assignment;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE user_engagement_MIS(
+id int NOT NULL primary key,
+candidate_id int NOT NULL,
+Date_Time date NOT NULL,
+Cpu_Count int NOT NULL,
+Cpu_Working_Time float NOT NULL,
+Cpu_idle_Time float NOT NULL,
+cpu_percent float NOT NULL,
+Usage_cpu_count int NOT NULL,
+number_of_software_interrupts_since_boot float NOT NULL,
+number_of_system_calls_since_boot int NOT NULL,
+number_of_interrupts_since_boot int NOT NULL,
+cpu_avg_load_over_1_min float NOT NULL,
+cpu_avg_load_over_5_min float NOT NULL,
+cpu_avg_load_over_15_min float NOT NULL,
+system_total_memory BIGINT NOT NULL,
+system_used_memory float NOT NULL,
+system_free_memory float NOT NULL,
+system_active_memory float NOT NULL,
+system_inactive_memory float NOT NULL,
+system_buffers_memory int NOT NULL,
+system_cached_memory float NOT NULL,
+system_shared_memory int NOT NULL,
+system_avalible_memory float  NOT NULL,
+disk_total_memory BIGINT NOT NULL,
+disk_used_memory BIGINT NOT NULL,
+disk_free_memory BIGINT NOT NULL,
+disk_read_count BIGINT NOT NULL,
+disk_write_count BIGINT NOT NULL,
+disk_read_bytes BIGINT NOT NULL,
+disk_write_bytes BIGINT NOT NULL,
+time_spent_reading_from_disk BIGINT NOT NULL,
+time_spent_writing_to_disk BIGINT NOT NULL,
+time_spent_doing_actual_Input_Output BIGINT NOT NULL,
+number_of_bytes_sent BIGINT NOT NULL,
+number_of_bytes_received BIGINT NOT NULL,
+number_of_packets_sent BIGINT NOT NULL,
+number_of_packets_recived BIGINT NOT NULL,
+total_number_of_errors_while_receiving BIGINT NOT NULL,
+total_number_of_errors_while_sending BIGINT NOT NULL,
+total_number_of_incoming_packets_which_were_dropped BIGINT NOT NULL,
+total_number_of_outgoing_packets_which_were_dropped BIGINT NOT NULL,
+boot_time nvarchar(50) NOT NULL,
+keyboard float NOT NULL,
+mouse int NOT NULL,
+technology nvarchar(100) NOT NULL,
+files_changed int NOT NULL,
+CONSTRAINT FK_user_engagemnt_mis_candidate_id FOREIGN KEY (candidate_id) REFERENCES fellowship_candidates (id)
+)
+
+
+INSERT INTO user_engagement_MIS values
+(1, 1, '2023-09-26', 4, 123.45, 67.89, 75.0, 8, 123.0, 456, 789, 1.23, 4.56, 7.89, 81920000000, 20.48, 61.44,
+40.96, 20.48, 512, 20.48, 512, 102.40, 1048576, 524288, 5242880, 512345, 67890, 1234567, 7654321, 2345678, 9876543,
+3456789, 1234567890, 987654321, 1234, 5678, 1234567, 7654321, 1234, 5678,'1 day', 0,0,'Android',1)
+
+
+INSERT INTO user_engagement_MIS values
+(2, 2, '2023-09-27', 4, 234.56, 78.90, 80.0, 4, 234.0, 567, 890, 2.34, 5.67, 8.90, 8192, 204.8, 614.4,
+4096, 2048, 512, 2048, 512, 1024.0, 1048576, 524288, 5242880, 234567, 78901, 2345678, 8765432, 3456789, 9012345,
+4567890, 234567890, 876543210, 2345, 6789, 2345678, 8765432, 2345, 6789,'1 Day',0, 0,'Android', 2)
+
+ 
+
+INSERT INTO user_engagement_MIS values(3, 3, '2023-09-28', 8, 345.67, 89.01, 90.0, 6, 345.0, 678, 901, 3.45, 6.78, 9.01, 16384, 4096, 12288,
+8192, 4096, 1024, 4096, 1024, 20480, 2097152, 1048576, 10485760, 345678, 89012, 3456789, 9876543, 4567890, 1234567,
+5678901, 3456789012, 789012345, 3456, 7890, 3456789, 9876543, 3456, 7890,'1 day',0,0,'Android', 3)
+ 
+
+INSERT INTO user_engagement_MIS values(4, 4, '2023-09-29', 8, 456.78, 90.12, 95.0, 4, 456.0, 789, 901, 4.56, 7.89, 0.12, 16384, 4096, 12288,
+8192, 4096, 1024, 4096, 1024, 20480, 2097152, 1048576, 10485760, 456789, 90123, 4567890, 2345678, 5678901, 2345678,
+9012345, 2345678901, 789012345, 4567, 8901, 2345678, 1234567, 4567, 8901,'1 day',0,0,'Android', 4)
+
+
+INSERT INTO user_engagement_MIS values(5, 5, '2023-09-30 16:00:00', 4, 567.89, 12.34, 85.0, 8, 567.0, 890, 123, 5.67, 8.90, 1.23, 8192, 2048, 6144,
+4096, 2048, 512, 2048, 512, 10240, 1048576, 524288, 5242880, 567890, 12345, 5678901, 2345678, 9012345, 4567890,
+2345678, 1234567890, 567890123, 5678, 9012, 1234567, 7654321, 5678, 9012,'1 day',0,0,'Android', 5)
+
+Select * from user_engagement_MIS;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
